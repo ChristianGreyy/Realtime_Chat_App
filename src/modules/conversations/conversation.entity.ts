@@ -8,6 +8,7 @@ import {
   IsEmail,
   ForeignKey,
   BelongsTo,
+  Default,
 } from 'sequelize-typescript';
 import { User } from '../users/user.entity';
 
@@ -19,17 +20,20 @@ export class Conversation extends Model<Conversation> {
   @Column({ field: 'sender_id' })
   senderId: number;
 
+  @BelongsTo(() => User, { foreignKey: 'sender_id', as: 'sender' })
+  sender: User;
+
   @ForeignKey(() => User)
   @Column({ field: 'receiver_id' })
-  receiverd: number;
+  receiverId: number;
 
-  @BelongsTo(() => User)
-  user: User;
+  @BelongsTo(() => User, { foreignKey: 'receiver_id', as: 'receiver' })
+  receiver: User;
 
   @Column
   text: string;
 
-  @Column({ field: 'is_read' })
+  @Column({ field: 'is_read', defaultValue: false })
   isRead: boolean;
 
   @CreatedAt

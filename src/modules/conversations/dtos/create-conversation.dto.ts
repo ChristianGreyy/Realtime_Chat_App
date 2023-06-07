@@ -20,5 +20,5 @@ export default class CreateConversationDto {
   text: string;
 
   @IsBoolean()
-  isRead: string;
+  isRead: boolean = false;
 }

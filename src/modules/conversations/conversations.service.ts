@@ -20,7 +20,18 @@ export class ConversationsService {
   ) {}
 
   async getConversations(): Promise<Conversation[]> {
-    return await this.conversationRepository.findAll();
+    return await this.conversationRepository.findAll({
+      include: [
+        {
+          model: User,
+          as: 'sender',
+        },
+        {
+          model: User,
+          as: 'receiver',
+        },
+      ],
+    });
   }
 
   async getConversationById(conversationId: number): Promise<Conversation> {
