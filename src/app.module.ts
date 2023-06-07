@@ -9,6 +9,7 @@ import { Dialect } from 'sequelize';
 import { User } from './modules/users/user.entity';
 import { ConversationsModule } from './modules/conversations/conversations.module';
 import { Conversation } from './modules/conversations/conversation.entity';
+import { TokensModule } from './modules/tokens/tokens.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -24,6 +25,7 @@ import { Conversation } from './modules/conversations/conversation.entity';
     AuthModule,
     UsersModule,
     ConversationsModule,
+    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],

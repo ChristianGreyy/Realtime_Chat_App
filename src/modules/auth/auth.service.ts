@@ -11,19 +11,21 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../users/user.entity';
 import RegisterDto from './dtos/register.dto';
 import { UsersService } from '../users/users.service';
+import { TokensService } from '../tokens/tokens.service';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User)
     private userRepository: typeof User,
     private usersService: UsersService,
+    private tokensService: TokensService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
     const user: any = await this.userRepository.findOne({
       where: { email: email },
     });
-    if (!user || user.isCodeUsed === false) {
+    if (!user) {
       return null;
     }
     const isPassword = await bcrypt.compare(password, user.password);
@@ -35,8 +37,8 @@ export class AuthService {
 
   async login(user: any): Promise<any> {
     const payload = { phoneNumber: user.phoneNumber, sub: user.id };
-    const accessToken = await this.tokenService.generateAccessToken(payload);
-    const refreshToken = await this.tokenService.generateRefreshToken(payload);
+    const accessToken = await this.tokensService.generateAccessToken(payload);
+    const refreshToken = await this.tokensService.generateRefreshToken(payload);
     user.refreshToken = refreshToken;
     await user.save();
     return {

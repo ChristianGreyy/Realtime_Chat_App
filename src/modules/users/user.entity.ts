@@ -31,6 +31,9 @@ export class User extends Model<User> {
   @Column({ field: 'last_name' })
   lastName: string;
 
+  @Column({ field: 'refresh_token', defaultValue: null })
+  refreshToken: string;
+
   @CreatedAt
   @Column({ field: 'createdAt' })
   createdAt: Date;
