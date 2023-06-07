@@ -1,6 +1,7 @@
 # Sequelize
 npm install --save @nestjs/sequelize sequelize sequelize-typescript pg-hstore pg
 npm install --save-dev @types/sequelize
+npm install --save-dev sequelize-cli
 
 # Dotenv
 npm i @nestjs/config
@@ -24,6 +25,9 @@ npm i --save @nestjs/websockets @nestjs/platform-socket.io
 
 # validation
 npm i --save class-validator class-transformer
+
+npx sequelize-cli model:generate --name User --attributes email:string,password:string,first_name:string,last_name:string
+
 
 
 
