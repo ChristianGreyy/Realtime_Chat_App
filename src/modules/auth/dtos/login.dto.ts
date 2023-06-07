@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export default class RegisterDto {
+export default class LoginDto {
   @IsEmail()
   @MaxLength(30)
   email: string;
@@ -18,14 +18,4 @@ export default class RegisterDto {
     message: 'password too weak',
   })
   password: string;
-
-  @IsString()
-  @MinLength(5)
-  @MaxLength(30)
-  firstName: string;
-
-  @IsString()
-  @MinLength(5)
-  @MaxLength(30)
-  lastName: string;
 }
