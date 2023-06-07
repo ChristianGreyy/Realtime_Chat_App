@@ -22,6 +22,8 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
+    console.log(email, password);
+
     const user: any = await this.userRepository.findOne({
       where: { email: email },
     });
@@ -36,7 +38,7 @@ export class AuthService {
   }
 
   async login(user: any): Promise<any> {
-    const payload = { phoneNumber: user.phoneNumber, sub: user.id };
+    const payload = { email: user.email, sub: user.id };
     const accessToken = await this.tokensService.generateAccessToken(payload);
     const refreshToken = await this.tokensService.generateRefreshToken(payload);
     user.refreshToken = refreshToken;

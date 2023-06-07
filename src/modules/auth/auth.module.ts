@@ -5,10 +5,17 @@ import { UsersModule } from '../users/users.module';
 import { TokensModule } from '../tokens/tokens.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from '../users/user.entity';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User]), UsersModule, TokensModule],
+  imports: [
+    SequelizeModule.forFeature([User]),
+    PassportModule,
+    UsersModule,
+    TokensModule,
+  ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, LocalStrategy],
 })
 export class AuthModule {}

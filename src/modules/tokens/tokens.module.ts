@@ -6,7 +6,8 @@ import { TokensService } from './tokens.service';
   imports: [
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET,
+      // secret: process.env.JWT_SECRET,
+      secret: 'SUPER_JWT_SECRET_KEY',
     }),
   ],
   providers: [TokensService],

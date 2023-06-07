@@ -10,10 +10,12 @@ import { User } from './modules/users/user.entity';
 import { ConversationsModule } from './modules/conversations/conversations.module';
 import { Conversation } from './modules/conversations/conversation.entity';
 import { TokensModule } from './modules/tokens/tokens.module';
-import { join } from 'path';
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     SequelizeModule.forRoot({
       dialect: process.env.DB_DIALECT as Dialect,
       host: process.env.DB_HOST,
@@ -26,7 +28,6 @@ import { join } from 'path';
     AuthModule,
     UsersModule,
     ConversationsModule,
-    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
