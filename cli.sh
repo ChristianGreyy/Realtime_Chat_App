@@ -29,6 +29,9 @@ npm i --save class-validator class-transformer
 # migration
 npx sequelize-cli model:generate --name User --attributes email:string,password:string,first_name:string,last_name:string
 npx sequelize-cli model:generate --name Conversation --attributes text:string,is_read:boolean
+npx sequelize-cli model:generate --name Channel --attributes name:string
+npx sequelize-cli model:generate --name Channel_User 
+npx sequelize-cli model:generate --name Message --attributes text:string,is_read:boolean
 
 
 
