@@ -22,6 +22,9 @@ npm install --save @nestjs/jwt jsonwebtoken
 # Socket
 npm i --save @nestjs/websockets @nestjs/platform-socket.io
 
+# validation
+npm i --save class-validator class-transformer
+
 
 
 
