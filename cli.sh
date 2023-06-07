@@ -31,7 +31,7 @@ npx sequelize-cli model:generate --name User --attributes email:string,password:
 npx sequelize-cli model:generate --name Conversation --attributes text:string,is_read:boolean
 npx sequelize-cli model:generate --name Channel --attributes name:string
 npx sequelize-cli model:generate --name Channel_User 
-npx sequelize-cli model:generate --name Message --attributes text:string,is_read:boolean
+npx sequelize-cli model:generate --name Messages --attributes text:string,is_read:boolean
 
 
 

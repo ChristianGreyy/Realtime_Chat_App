@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConversationsController } from './channels.controller';
-import { ConversationsService } from './channels.service';
+import { ChannelsController } from './channels.controller';
+import { ChannelsService } from './channels.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from '../users/user.entity';
-import { Conversation } from './channel.entity';
+import { Channel } from './channel.entity';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Conversation])],
-  controllers: [ConversationsController],
-  providers: [ConversationsService],
+  imports: [SequelizeModule.forFeature([User, Channel])],
+  controllers: [ChannelsController],
+  providers: [ChannelsService],
 })
-export class ConversationsModule {}
+export class ChannelsModule {}
