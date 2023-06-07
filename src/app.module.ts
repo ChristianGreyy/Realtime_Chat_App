@@ -10,6 +10,7 @@ import { User } from './modules/users/user.entity';
 import { ConversationsModule } from './modules/conversations/conversations.module';
 import { Conversation } from './modules/conversations/conversation.entity';
 import { TokensModule } from './modules/tokens/tokens.module';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot(),
