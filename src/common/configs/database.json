@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "230502",
-    "database": "customer_loyalty",
+    "database": "realtime_chat_app",
     "host": "localhost",
     "dialect": "postgres"
   },

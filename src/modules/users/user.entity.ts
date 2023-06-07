@@ -5,12 +5,14 @@ import {
   Unique,
   CreatedAt,
   UpdatedAt,
+  IsEmail,
 } from 'sequelize-typescript';
 
 @Table({
   tableName: 'Users',
 })
 export class User extends Model<User> {
+  @IsEmail
   @Unique
   @Column
   email: string;

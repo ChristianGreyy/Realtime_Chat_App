@@ -6,6 +6,7 @@ import { UsersModule } from './modules/users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { Dialect } from 'sequelize';
+import { User } from './modules/users/user.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -16,6 +17,7 @@ import { Dialect } from 'sequelize';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
+      models: [User],
     }),
     AuthModule,
     UsersModule,

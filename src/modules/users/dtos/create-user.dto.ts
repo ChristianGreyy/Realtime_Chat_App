@@ -20,12 +20,12 @@ export default class CreateUserDto {
   password: string;
 
   @IsString()
-  @MinLength(5)
+  @MinLength(2)
   @MaxLength(30)
   firstName: string;
 
   @IsString()
-  @MinLength(5)
+  @MinLength(2)
   @MaxLength(30)
   lastName: string;
 }

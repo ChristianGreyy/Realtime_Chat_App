@@ -24,12 +24,13 @@ export default class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @MinLength(5)
+  @MinLength(2)
   @MaxLength(30)
   firstName?: string;
 
+  @IsOptional()
   @IsString()
-  @MinLength(5)
+  @MinLength(2)
   @MaxLength(30)
   lastName?: string;
 }
