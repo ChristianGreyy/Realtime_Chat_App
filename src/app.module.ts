@@ -7,6 +7,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 import { User } from './modules/users/user.entity';
+import { ConversationsModule } from './modules/conversations/conversations.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -21,6 +22,7 @@ import { User } from './modules/users/user.entity';
     }),
     AuthModule,
     UsersModule,
+    ConversationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
