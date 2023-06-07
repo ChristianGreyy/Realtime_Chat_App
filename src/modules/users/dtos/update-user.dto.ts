@@ -10,7 +10,7 @@ import {
 export default class CreateUserDto {
   @IsOptional()
   @IsEmail()
-  @MaxLength(30)
+  @MaxLength(80)
   email?: string;
 
   @IsOptional()
