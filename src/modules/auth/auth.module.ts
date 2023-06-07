@@ -7,6 +7,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from '../users/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { LocalStrategy } from './local.strategy';
     TokensModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

@@ -14,13 +14,20 @@ import {
 import { ConversationsService } from './conversations.service';
 import CreateConversationDto from './dtos/create-conversation.dto';
 import UpdateConversationDto from './dtos/update-conversation.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { HasRoles } from 'src/common/decorators/has-roles.decorator';
+import { Role } from 'src/common/enums/role';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('conversations')
 export class ConversationsController {
   constructor(private conversationService: ConversationsService) {}
 
+  @HasRoles(Role.user)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('/')
-  async getConversations() {
+  async getConversations(@Request() req) {
+    console.log(req.user);
     const conversations = await this.conversationService.getConversations();
     return conversations;
   }
