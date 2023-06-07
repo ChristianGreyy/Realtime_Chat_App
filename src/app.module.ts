@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 import { User } from './modules/users/user.entity';
 import { ConversationsModule } from './modules/conversations/conversations.module';
+import { Conversation } from './modules/conversations/conversation.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -18,7 +19,7 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [User],
+      models: [User, Conversation],
     }),
     AuthModule,
     UsersModule,
