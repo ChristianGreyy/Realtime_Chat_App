@@ -26,6 +26,7 @@ npm i --save @nestjs/websockets @nestjs/platform-socket.io
 # validation
 npm i --save class-validator class-transformer
 
+# migration
 npx sequelize-cli model:generate --name User --attributes email:string,password:string,first_name:string,last_name:string
 
 
