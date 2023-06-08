@@ -17,6 +17,7 @@ import UpdateUserDto from './dtos/update-user.dto';
 import JoinChannelDto from './dtos/join-channel';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
+import ChatMessageDto from './dtos/chat-message';
 
 @Controller('users')
 export class UsersController {
@@ -64,6 +65,19 @@ export class UsersController {
     const newChannelUser = await this.userService.joinChannel(
       req.user,
       joinChannelDto,
+    );
+    return {
+      message: 'Join channel successfully',
+      newChannelUser,
+    };
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('/chat-message')
+  async chatMessage(@Request() req, @Body() chatMessageDto: ChatMessageDto) {
+    const newChannelUser = await this.userService.chatMessage(
+      req.user,
+      chatMessageDto,
     );
     return {
       message: 'Join channel successfully',
