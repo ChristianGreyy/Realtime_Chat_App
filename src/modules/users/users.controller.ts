@@ -14,6 +14,9 @@ import {
 import { UsersService } from './users.service';
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
+import JoinChannelDto from './dtos/join-channel';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -53,5 +56,18 @@ export class UsersController {
   async deleteUserById(@Param('userId', ParseIntPipe) userId: number) {
     await this.userService.deleteUserById(userId);
     return { message: 'Delete user successfully' };
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('/join-channel')
+  async joinChannel(@Request() req, @Body() joinChannelDto: JoinChannelDto) {
+    const newChannelUser = await this.userService.joinChannel(
+      req.user,
+      joinChannelDto,
+    );
+    return {
+      message: 'Join channel successfully',
+      newChannelUser,
+    };
   }
 }

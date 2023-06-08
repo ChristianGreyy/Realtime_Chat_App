@@ -7,12 +7,19 @@ import * as bcrypt from 'bcrypt';
 import CreateUserDto from './dtos/create-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.entity';
+import JoinChannelDto from './dtos/join-channel';
+import { Channel } from '../channels/channel.entity';
+import { ChannelUser } from '../channel_users/channel_user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User)
     private userRepository: typeof User,
+    @InjectModel(Channel)
+    private channelRepository: typeof Channel,
+    @InjectModel(ChannelUser)
+    private channelUserRepository: typeof ChannelUser,
   ) {}
 
   async getUsers(): Promise<User[]> {
@@ -62,5 +69,34 @@ export class UsersService {
         id: userId,
       },
     });
+  }
+
+  async joinChannel(
+    user: any,
+    joinChannelDto: JoinChannelDto,
+  ): Promise<ChannelUser> {
+    console.log(user);
+    const channel = await this.channelRepository.findOne({
+      where: {
+        code: joinChannelDto.code,
+      },
+    });
+
+    if (!channel) {
+      throw new NotFoundException('Channel not found');
+    }
+    const channelUser = await this.channelUserRepository.create({
+      userId: user.id,
+      channelId: channel.id,
+    });
+
+    return channelUser;
+    // await user.addChannel(channel, { through: ChannelUser });
+
+    // await this.userRepository.destroy({
+    //   where: {
+    //     id: userId,
+    //   },
+    // });
   }
 }
