@@ -63,7 +63,7 @@ export class UsersController {
   @Post('/join-channel')
   async joinChannel(@Request() req, @Body() joinChannelDto: JoinChannelDto) {
     const newChannelUser = await this.userService.joinChannel(
-      req.user,
+      req.user.id,
       joinChannelDto,
     );
     return {
@@ -76,7 +76,7 @@ export class UsersController {
   @Post('/chat-message')
   async chatMessage(@Request() req, @Body() chatMessageDto: ChatMessageDto) {
     const newChannelUser = await this.userService.chatMessage(
-      req.user,
+      req.user.id,
       chatMessageDto,
     );
     return {

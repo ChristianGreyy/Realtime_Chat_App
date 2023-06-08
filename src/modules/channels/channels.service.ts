@@ -41,6 +41,15 @@ export class ChannelsService {
     return channel;
   }
 
+  async getChannelByCode(code: string): Promise<Channel> {
+    const channel = await this.channelRepository.findOne({
+      where: {
+        code: code,
+      },
+    });
+    return channel;
+  }
+
   async createChannel(
     createChannelDto: any | CreateChannelDto,
   ): Promise<Channel> {

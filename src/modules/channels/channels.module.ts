@@ -9,5 +9,6 @@ import { Channel } from './channel.entity';
   imports: [SequelizeModule.forFeature([User, Channel])],
   controllers: [ChannelsController],
   providers: [ChannelsService],
+  exports: [ChannelsService],
 })
 export class ChannelsModule {}

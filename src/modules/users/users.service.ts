@@ -12,6 +12,7 @@ import { Channel } from '../channels/channel.entity';
 import { ChannelUser } from '../channel_users/channel_user.entity';
 import ChatMessageDto from './dtos/chat-message';
 import { Message } from '../messages/message.entity';
+import { ChannelUsersService } from '../channel_users/channel_user.service';
 
 @Injectable()
 export class UsersService {
@@ -20,10 +21,10 @@ export class UsersService {
     private userRepository: typeof User,
     @InjectModel(Channel)
     private channelRepository: typeof Channel,
-    @InjectModel(ChannelUser)
-    private channelUserRepository: typeof ChannelUser,
     @InjectModel(Message)
     private messageRepository: typeof Message,
+
+    private channelUserSerivce: ChannelUsersService,
   ) {}
 
   async getUsers(): Promise<User[]> {
@@ -76,24 +77,13 @@ export class UsersService {
   }
 
   async joinChannel(
-    user: any,
+    userId: number,
     joinChannelDto: JoinChannelDto,
   ): Promise<ChannelUser> {
-    console.log(user);
-    const channel = await this.channelRepository.findOne({
-      where: {
-        code: joinChannelDto.code,
-      },
+    const channelUser = await this.channelUserSerivce.createChannelUser({
+      userId,
+      code: joinChannelDto.code,
     });
-
-    if (!channel) {
-      throw new NotFoundException('Channel not found');
-    }
-    const channelUser = await this.channelUserRepository.create({
-      userId: user.id,
-      channelId: channel.id,
-    });
-
     return channelUser;
   }
 
