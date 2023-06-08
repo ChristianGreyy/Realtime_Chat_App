@@ -7,8 +7,13 @@ import {
   UpdatedAt,
   IsEmail,
   HasMany,
+  BelongsToMany,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Conversation } from '../conversations/conversation.entity';
+import { Channel } from '../channels/channel.entity';
+import { Message } from '../messages/message.entity';
+import { ChannelUser } from '../channel_users/channel_user.entity';
 
 @Table({
   tableName: 'Users',
@@ -16,6 +21,12 @@ import { Conversation } from '../conversations/conversation.entity';
 export class User extends Model<User> {
   @HasMany(() => Conversation)
   conversations: Conversation[];
+
+  @BelongsToMany(() => Channel, () => Message)
+  chatChannels: Channel[];
+
+  @BelongsToMany(() => Channel, () => ChannelUser)
+  channels: Channel[];
 
   @IsEmail
   @Unique
