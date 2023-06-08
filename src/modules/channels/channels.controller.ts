@@ -8,8 +8,6 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Request,
-  UseGuards,
 } from '@nestjs/common';
 import { ChannelsService } from './channels.service';
 import CreateChannelDto from './dtos/create-channel.dto';

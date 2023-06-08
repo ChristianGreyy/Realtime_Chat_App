@@ -8,6 +8,8 @@ import CreateChannelDto from './dtos/create-channel.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Channel } from './channel.entity';
 import { User } from '../users/user.entity';
+import * as crypto from 'crypto';
+import { Message } from '../messages/message.entity';
 
 @Injectable()
 export class ChannelsService {
@@ -20,7 +22,14 @@ export class ChannelsService {
   ) {}
 
   async getChannels(): Promise<Channel[]> {
-    return await this.channelRepository.findAll({});
+    return await this.channelRepository.findAll({
+      include: [
+        {
+          model: User,
+          as: 'members',
+        },
+      ],
+    });
   }
 
   async getChannelById(channelId: number): Promise<Channel> {
@@ -35,19 +44,9 @@ export class ChannelsService {
   async createChannel(
     createChannelDto: any | CreateChannelDto,
   ): Promise<Channel> {
-    // Check channel exists ?
-    const sender: any = await this.userRepository.findByPk(
-      createChannelDto.senderId,
-    );
-    if (!sender) {
-      throw new NotFoundException('Sender not found');
-    }
-    const receiver: any = await this.userRepository.findByPk(
-      createChannelDto.receiverId,
-    );
-    if (!receiver) {
-      throw new NotFoundException('Receiver not found');
-    }
+    const length = 10;
+    const randomString = crypto.randomBytes(length).toString('hex');
+    createChannelDto['code'] = randomString;
     return await this.channelRepository.create(createChannelDto);
   }
 

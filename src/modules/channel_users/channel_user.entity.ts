@@ -10,7 +10,7 @@ import { User } from '../users/user.entity';
 import { Channel } from '../channels/channel.entity';
 
 @Table({
-  tableName: 'ChannelUsers',
+  tableName: 'Channel_Users',
 })
 export class ChannelUser extends Model<ChannelUser> {
   @ForeignKey(() => User)

@@ -14,10 +14,10 @@ import { User } from '../users/user.entity';
 })
 export class Channel extends Model<Channel> {
   @BelongsToMany(() => User, () => Message)
-  members: Channel[];
+  users: User[];
 
   @BelongsToMany(() => User, () => ChannelUser)
-  users: Channel[];
+  members: User[];
 
   @Column
   name: string;
