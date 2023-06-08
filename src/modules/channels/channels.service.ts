@@ -20,18 +20,7 @@ export class ChannelsService {
   ) {}
 
   async getChannels(): Promise<Channel[]> {
-    return await this.channelRepository.findAll({
-      include: [
-        {
-          model: User,
-          as: 'sender',
-        },
-        {
-          model: User,
-          as: 'receiver',
-        },
-      ],
-    });
+    return await this.channelRepository.findAll({});
   }
 
   async getChannelById(channelId: number): Promise<Channel> {
