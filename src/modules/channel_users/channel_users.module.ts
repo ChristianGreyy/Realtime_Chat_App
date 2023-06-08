@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ChannelUsersService } from './channel_user.service';
+import { ChannelUsersService } from './channel_users.service';
 import { ChannelUser } from './channel_user.entity';
 import { ChannelsModule } from '../channels/channels.module';
 

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ChannelUsersService } from './channel_user.service';
+import { ChannelUsersService } from './channel_users.service';
 
 describe('ChannelUsersService', () => {
   let service: ChannelUsersService;
