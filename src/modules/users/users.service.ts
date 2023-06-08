@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -88,7 +89,18 @@ export class UsersService {
   }
 
   async getChannelsByMe(userId: number) {
-    return this.channelSerivce.getChannelByUserId(userId);
+    return this.channelSerivce.getChannelsByUserId(userId);
+  }
+
+  async getMessagesByMyChannel(userId: number, channelId: number) {
+    const channel = await this.channelSerivce.getChannelByIdAndUserId(
+      channelId,
+      userId,
+    );
+    if (!channel) {
+      throw new ForbiddenException('User is not in the channel');
+    }
+    return this.messageSerivce.getMessagesByChannelId(channelId);
   }
 
   async chatMessage(

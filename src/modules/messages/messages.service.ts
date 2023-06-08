@@ -23,6 +23,15 @@ export class MessagesService {
     return await this.messageRepository.findAll({});
   }
 
+  async getMessagesByChannelId(channelId: number): Promise<Message[]> {
+    const messages = await this.messageRepository.findAll({
+      where: {
+        channelId: channelId,
+      },
+    });
+    return messages;
+  }
+
   async getMessageById(messageId: number): Promise<Message> {
     const message = await this.messageRepository.findOne({
       where: {

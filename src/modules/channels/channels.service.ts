@@ -41,6 +41,27 @@ export class ChannelsService {
     return channel;
   }
 
+  async getChannelByIdAndUserId(
+    channelId: number,
+    userId: number,
+  ): Promise<Channel> {
+    const channel = await this.channelRepository.findOne({
+      where: {
+        id: channelId,
+      },
+      include: [
+        {
+          model: User,
+          as: 'users',
+          where: {
+            id: userId,
+          },
+        },
+      ],
+    });
+    return channel;
+  }
+
   async getChannelByCode(code: string): Promise<Channel> {
     const channel = await this.channelRepository.findOne({
       where: {
@@ -50,8 +71,8 @@ export class ChannelsService {
     return channel;
   }
 
-  async getChannelByUserId(userId: number): Promise<Channel> {
-    const channel = await this.channelRepository.findOne({
+  async getChannelsByUserId(userId: number): Promise<Channel[]> {
+    const channels = await this.channelRepository.findAll({
       include: [
         {
           model: User,
@@ -62,7 +83,7 @@ export class ChannelsService {
         },
       ],
     });
-    return channel;
+    return channels;
   }
 
   async createChannel(

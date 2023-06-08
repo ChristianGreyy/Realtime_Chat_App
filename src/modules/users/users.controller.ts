@@ -82,6 +82,21 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('/me/channels/:channelId')
+  async getMessagesByMyChannel(
+    @Request() req,
+    @Param('channelId') channelId: number,
+  ) {
+    const channels = await this.userService.getMessagesByMyChannel(
+      req.user.id,
+      channelId,
+    );
+    return {
+      channels,
+    };
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('/chat-message')
   async chatMessage(@Request() req, @Body() chatMessageDto: ChatMessageDto) {
     const newChannelUser = await this.userService.chatMessage(
