@@ -50,6 +50,21 @@ export class ChannelsService {
     return channel;
   }
 
+  async getChannelByUserId(userId: number): Promise<Channel> {
+    const channel = await this.channelRepository.findOne({
+      include: [
+        {
+          model: User,
+          as: 'members',
+          where: {
+            id: userId,
+          },
+        },
+      ],
+    });
+    return channel;
+  }
+
   async createChannel(
     createChannelDto: any | CreateChannelDto,
   ): Promise<Channel> {

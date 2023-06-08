@@ -14,6 +14,7 @@ import ChatMessageDto from './dtos/chat-message';
 import { Message } from '../messages/message.entity';
 import { ChannelUsersService } from '../channel_users/channel_users.service';
 import { MessagesService } from '../messages/messages.service';
+import { ChannelsService } from '../channels/channels.service';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,7 @@ export class UsersService {
 
     private channelUserSerivce: ChannelUsersService,
     private messageSerivce: MessagesService,
+    private channelSerivce: ChannelsService,
   ) {}
 
   async getUsers(): Promise<User[]> {
@@ -83,6 +85,10 @@ export class UsersService {
       code: joinChannelDto.code,
     });
     return channelUser;
+  }
+
+  async getChannelsByMe(userId: number) {
+    return this.channelSerivce.getChannelByUserId(userId);
   }
 
   async chatMessage(

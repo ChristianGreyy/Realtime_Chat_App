@@ -8,12 +8,14 @@ import { ChannelUser } from '../channel_users/channel_user.entity';
 import { Message } from '../messages/message.entity';
 import { ChannelUsersModule } from '../channel_users/channel_users.module';
 import { MessagesModule } from '../messages/messages.module';
+import { ChannelsModule } from '../channels/channels.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([User]),
     ChannelUsersModule,
     MessagesModule,
+    ChannelsModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],
