@@ -23,10 +23,10 @@ export class User extends Model<User> {
   conversations: Conversation[];
 
   @BelongsToMany(() => Channel, () => Message)
-  chatChannels: Channel[];
+  channels: Channel[];
 
   @BelongsToMany(() => Channel, () => ChannelUser)
-  channels: Channel[];
+  chatChannels: Channel[];
 
   @IsEmail
   @Unique
