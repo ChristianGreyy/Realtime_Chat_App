@@ -7,7 +7,11 @@ import { join } from 'path';
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
   app.useStaticAssets(join(__dirname, '../src/public'));
+  app.setBaseViewsDir(join(__dirname, '../src/views'));
+  app.setViewEngine('ejs');
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

@@ -14,6 +14,8 @@ import { ChannelsModule } from './modules/channels/channels.module';
 import { Channel } from './modules/channels/channel.entity';
 import { Message } from './modules/messages/message.entity';
 import { ChannelUser } from './modules/channel_users/channel_user.entity';
+import { ViewsModule } from './modules/views/view.module';
+import { SocketGateway } from './modules/socket/socket.gateway';
 
 @Module({
   imports: [
@@ -33,8 +35,9 @@ import { ChannelUser } from './modules/channel_users/channel_user.entity';
     UsersModule,
     ConversationsModule,
     ChannelsModule,
+    ViewsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SocketGateway],
 })
 export class AppModule {}
