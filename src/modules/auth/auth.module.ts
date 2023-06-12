@@ -8,6 +8,8 @@ import { User } from '../users/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 
 @Module({
   imports: [
