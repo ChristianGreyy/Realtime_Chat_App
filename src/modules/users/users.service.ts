@@ -16,6 +16,7 @@ import { Message } from '../messages/message.entity';
 import { ChannelUsersService } from '../channel_users/channel_users.service';
 import { MessagesService } from '../messages/messages.service';
 import { ChannelsService } from '../channels/channels.service';
+const { Op } = require('sequelize');
 
 @Injectable()
 export class UsersService {
@@ -30,6 +31,17 @@ export class UsersService {
 
   async getUsers(): Promise<User[]> {
     return await this.userRepository.findAll();
+  }
+
+  async getUsersByMe(userId: number): Promise<User[]> {
+    const users = await this.userRepository.findAll({
+      where: {
+        id: {
+          [Op.not]: userId,
+        },
+      },
+    });
+    return users;
   }
 
   async getUserById(userId: number): Promise<User> {

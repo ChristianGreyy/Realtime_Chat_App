@@ -29,6 +29,13 @@ export class UsersController {
     return users;
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('/me')
+  async getUsersByMe(@Request() req) {
+    const users = await this.userService.getUsersByMe(req.user.id);
+    return users;
+  }
+
   @Post('/')
   async createUser(@Body() createUserDto: CreateUserDto) {
     const newUser = await this.userService.createUser(createUserDto);
