@@ -9,5 +9,6 @@ import { Conversation } from './conversation.entity';
   imports: [SequelizeModule.forFeature([User, Conversation])],
   controllers: [ConversationsController],
   providers: [ConversationsService],
+  exports: [ConversationsService],
 })
 export class ConversationsModule {}

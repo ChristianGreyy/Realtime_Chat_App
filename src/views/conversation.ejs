@@ -24,7 +24,7 @@
                             <input type="text" class="form-control" placeholder="Search...">
                         </div>
                         <ul class="list-unstyled chat-list mt-2 mb-0">
-                            <li class="clearfix">
+                            <!-- <li class="clearfix">
                                 <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
                                 <div class="about">
                                     <div class="name">Vincent Porter</div>
@@ -37,14 +37,14 @@
                                     <div class="name">Aiden Chavez</div>
                                     <div class="status"> <i class="fa fa-circle online"></i> online </div>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="chat">
                         <div class="chat-header clearfix">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                    <a class="receiver-avatar" href="" data-toggle="modal" data-target="#view_info">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
                                     </a>
                                     <div class="chat-about">
@@ -66,7 +66,7 @@
                         </div>
                         <div class="chat-history">
                             <ul class="m-b-0">
-                                <li class="clearfix">
+                                <!-- <li class="clearfix">
                                     <div class="message-data text-right">
                                         <span class="message-data-time">10:10 AM, Today</span>
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
@@ -79,55 +79,156 @@
                                         <span class="message-data-time">10:12 AM, Today</span>
                                     </div>
                                     <div class="message my-message">Are we meeting today?</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <span class="message-data-time">10:15 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Project has been already finished and I have results
-                                        to show you.</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <span class="message-data-time">10:15 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Project has been already finished and I have results
-                                        to show you.</div>
-                                </li>
+                                </li> -->
+
                             </ul>
                         </div>
-                        <div class="chat-message clearfix">
+                        <form action="" method="POST" class="chat-message clearfix">
                             <div class="input-group mb-0">
-                                <div class="input-group-prepend">
+                                <button class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-send"></i></span>
-                                </div>
+                                </button>
                                 <input type="text" class="form-control" placeholder="Enter text here...">
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script type="module">
+
         import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
         const token = localStorage.getItem("accessToken");
-
+        const slagSplit = window.location.href.split('/');
+        const receiverId = slagSplit[slagSplit.length - 1];
+        let receiver;
         const socket = io('http://localhost:8080/chat', {
             transportOptions: {
                 polling: {
                     extraHeaders: {
-                        Authorization: 'Bearer ' + token, // 'Bearer h93t4293t49jt34j9rferek...'
+                        Authorization: 'Bearer ' + token,
                     }
                 }
             }
         });
 
+        const promiseAll = await Promise.allSettled([
+            await (await fetch("/users/me", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+                },
+            })).json(),
+            await (await fetch(`/conversations/${receiverId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+                },
+            })).json()
+        ])
+
+        if (promiseAll[0].status == 'fulfilled' && promiseAll[1].status == 'fulfilled') {
+            const users = promiseAll[0].value;
+            const conversations = promiseAll[1].value;
+
+            const listUsersHtml = users.map(user => {
+                if (user.id == receiverId) {
+                    receiver = user;
+                }
+                return `
+                    <li class="clearfix">
+                        <a href="/views/conversation/${user.id}"> 
+                            <img src="${user.avatar}" alt="avatar">
+                            <div class="about">
+                                <div class="name">${user.firstName + " " + user.lastName}</div>
+                                <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                            </div>
+                        </a>
+                    </li>
+                `
+            })
+            $('.list-unstyled').html(listUsersHtml.join(''))
+
+
+            // Render information of receiver
+            $('.chat-about').find('h6').text(receiver.firstName)
+            $('.receiver-avatar').find('img').attr('src', receiver.avatar)
+
+            // Render message 
+            let listMessagesHtml = conversations.map(message => {
+
+                const isMe = receiverId == message.receiver.id ? true : false
+                return `
+                <li class="clearfix">
+                    <div class="message-data ${isMe ? '' : 'text-right'}"> 
+                        <span class="message-data-time">${moment(new Date(message.createdAt), "YYYYMMDD").fromNow()}</span>
+                        <img style="display: ${isMe ? 'none' : 'inline-block'};" src="${message.receiver.avatar}" alt="avatar">
+                    </div>
+                    <div class="message ${isMe ? 'my-message' : 'other-message float-right'}"> 
+                        ${message.text}
+                    </div>
+                </li>
+                `
+            })
+
+            $('.chat-history').find('ul').html(listMessagesHtml.join(''))
+
+            // Typing messsage
+            $('.chat-message').find('input').on('change', (e) => {
+                socket.emit('typing')
+            })
+
+            // Send conversation
+            $('.chat-message').on('submit', (e) => {
+                e.preventDefault();
+                const text = $('.chat-message').find('input').val();
+                listMessagesHtml += `<li class="clearfix">
+                    <div class="message-data"> 
+                        <span class="message-data-time">${moment(new Date(Date.now()), "YYYYMMDD").fromNow()}</span>
+                    </div>
+                    <div class="message my-message"> 
+                        ${text}
+                    </div>
+                </li>
+                `
+
+                $('.chat-history').find('ul').html(listMessagesHtml)
+                $('.chat-message').find('input').val("")
+                socket.emit('send-conversation', {
+                    text,
+                    receiverId,
+                })
+            })
+
+            // Receive conversation
+            socket.on('receive-conversation', (data) => {
+                listMessagesHtml += `<li class="clearfix">
+                    <div class="message-data text-right"> 
+                        <span class="message-data-time">${moment(new Date(Date.now()), "YYYYMMDD").fromNow()}</span>
+                        <img style="display: inline-block" src="${receiver.avatar}" alt="avatar">
+                    </div>
+                    <div class="message other-message float-right"> 
+                        ${data.text}
+                    </div>
+                </li>
+                `
+                $('.chat-history').find('ul').html(listMessagesHtml)
+
+            })
+
+        }
+
+
         // const socket = io();
-        socket.emit('message', 'hello world!')
+        // socket.emit('message', 'hello world!')
     </script>
 </body>
 

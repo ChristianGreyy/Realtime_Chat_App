@@ -8,6 +8,7 @@ import CreateConversationDto from './dtos/create-conversation.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Conversation } from './conversation.entity';
 import { User } from '../users/user.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ConversationsService {
@@ -19,8 +20,24 @@ export class ConversationsService {
     private userRepository: typeof User,
   ) {}
 
-  async getConversations(): Promise<Conversation[]> {
+  async getConversations(
+    senderId: number,
+    receiverId: number,
+  ): Promise<Conversation[]> {
+    console.log(senderId, receiverId);
     return await this.conversationRepository.findAll({
+      where: {
+        [Op.or]: [
+          {
+            senderId: senderId,
+            receiverId: receiverId,
+          },
+          {
+            senderId: receiverId,
+            receiverId: senderId,
+          },
+        ],
+      },
       include: [
         {
           model: User,
@@ -45,20 +62,15 @@ export class ConversationsService {
 
   async createConversation(
     createConversationDto: any | CreateConversationDto,
+    senderId: number,
   ): Promise<Conversation> {
-    // Check conversation exists ?
-    const sender: any = await this.userRepository.findByPk(
-      createConversationDto.senderId,
-    );
-    if (!sender) {
-      throw new NotFoundException('Sender not found');
-    }
     const receiver: any = await this.userRepository.findByPk(
       createConversationDto.receiverId,
     );
     if (!receiver) {
       throw new NotFoundException('Receiver not found');
     }
+    createConversationDto['senderId'] = senderId;
     return await this.conversationRepository.create(createConversationDto);
   }
 

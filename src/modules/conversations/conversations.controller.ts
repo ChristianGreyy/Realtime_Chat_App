@@ -23,22 +23,29 @@ import { RolesGuard } from '../auth/roles.guard';
 export class ConversationsController {
   constructor(private conversationService: ConversationsService) {}
 
-  @HasRoles(Role.user)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Get('/')
-  async getConversations(@Request() req) {
-    console.log(req.user);
-    const conversations = await this.conversationService.getConversations();
+  @Get('/:receiverId')
+  async getConversations(
+    @Request() req,
+    @Param('receiverId') receiverId: number,
+  ) {
+    const conversations = await this.conversationService.getConversations(
+      req.user.id,
+      receiverId,
+    );
     return conversations;
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('/')
   async createConversation(
     @Body() createConversationDto: CreateConversationDto,
+    @Request() req,
   ) {
-    console.log('ok');
+    console.log(req.user);
     const newConversation = await this.conversationService.createConversation(
       createConversationDto,
+      req.user.id,
     );
     return newConversation;
   }

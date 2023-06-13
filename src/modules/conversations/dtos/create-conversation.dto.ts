@@ -9,8 +9,8 @@ import {
 } from 'class-validator';
 
 export default class CreateConversationDto {
-  @IsNumber()
-  senderId: number;
+  // @IsNumber()
+  // senderId: number;
 
   @IsNumber()
   receiverId: number;
